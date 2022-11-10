@@ -28,8 +28,8 @@ jobs:
         java-version: '19'
         distribution: 'temurin'
         cache: maven
-        env:
-          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+      env:
+        MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
     - name: Build with Maven
       run: mvn -B package --file pom.xml "$MONGO_PASSWORD"
 
