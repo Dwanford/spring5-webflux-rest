@@ -4,7 +4,6 @@ import com.dwanford.spring5webfluxrest.domain.Vendor;
 import com.dwanford.spring5webfluxrest.repositories.VendorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -12,6 +11,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 
 class VendorControllerTest {
 
@@ -28,7 +29,7 @@ class VendorControllerTest {
 
     @Test
     void list() {
-        BDDMockito.given(vendorRepository.findAll())
+        given(vendorRepository.findAll())
                 .willReturn(Flux.just(Vendor.builder().lastName("Bateman").build(),
                         Vendor.builder().lastName("Bickle").build()));
 
@@ -41,7 +42,7 @@ class VendorControllerTest {
 
     @Test
     void getById() {
-        BDDMockito.given(vendorRepository.findById("someid"))
+        given(vendorRepository.findById(anyString()))
                 .willReturn(Mono.just(Vendor.builder().lastName("Bateman").build()));
 
         webTestClient.get()
@@ -52,7 +53,7 @@ class VendorControllerTest {
 
     @Test
     void create() {
-        BDDMockito.given(vendorRepository.saveAll(any(Publisher.class)))
+        given(vendorRepository.saveAll(any(Publisher.class)))
                 .willReturn(Flux.just(Vendor.builder().lastName("Bateman").build()));
 
         Mono<Vendor> vendorToSave = Mono.just(Vendor.builder().lastName("Durden").build());
@@ -67,7 +68,7 @@ class VendorControllerTest {
 
     @Test
     void update() {
-        BDDMockito.given(vendorRepository.save(any(Vendor.class)))
+        given(vendorRepository.save(any(Vendor.class)))
                 .willReturn(Mono.just(Vendor.builder().lastName("Bateman").build()));
 
         Mono<Vendor> vendorToUpdate = Mono.just(Vendor.builder().lastName("Durden").build());
